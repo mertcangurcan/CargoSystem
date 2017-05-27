@@ -1,0 +1,61 @@
+{% extends 'home/header.html' %}
+{% load staticfiles %}
+
+{% block navbar %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="DeuZon Cargo Website">
+  <meta name="author" content="DeuZon Corporation">
+
+  <title>DeuZon</title>
+  <link type = "text/css" rel="stylesheet" href="{% static "css/bootstrap.css" %}" />
+  <link rel="stylesheet" href="{% static "css/navbar-fixed-top.css" %}" type = "text/css"/>
+  <script type = "text/javascript"  src="{% static "js/jquery.js" %}" ></script>
+  <script type="text/javascript" src="{% static "js/bootstrap.js" %}"></script>
+</head>
+<body>
+
+
+<!-- Company Select Dropdown -->
+   <div id="reg" class="row" >  
+        <div style="margin: auto; width: 600px;" >
+
+            <!-- Company Cargo Track number submit -->
+
+            <label>New Shipment<br><br></label>
+            
+                <form  action="/shipments/new" method="POST" class="form-inline" id="shipmentForm">
+                     {% csrf_token %}
+
+                    <div class="form-group col-md-12">
+                        <br><label class="control-label col-md-4">Source Address : </label>
+                        <textarea class="form-control col-md-8" form="shipmentForm" name="source" rows="3" placeholder="Please enter source address."></textarea>
+                    </div>    
+                    <div class="form-group col-md-12">
+                        <br><label class="control-label col-md-4">Destination Address : </label>
+                        <textarea class="form-control col-md-8" form="shipmentForm" name="dest" rows="3" placeholder="Please enter destination address."></textarea>
+                    </div>   
+                    <div class="form-group col-md-12">
+                        <br><label class="control-label col-md-4">Quantity : </label>
+                        <input class="col-md-8" type="number"  name="qnt" placeholder="Quantity" value="1" /><br><br>
+                    </div>
+
+                  <button class="float-left submit-button">Submit</button>
+                </form>
+            
+           
+        </div> 
+   </div>  
+
+</body>
+</html>
+<style>
+#reg {
+  width: 100%;
+  margin: 100px auto;
+}
+</style>
+
+    {% endblock navbar %}

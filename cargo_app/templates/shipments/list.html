@@ -1,0 +1,72 @@
+{% extends 'home/header.html' %}
+{% load staticfiles %}
+
+{% block navbar %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="DeuZon Cargo Website">
+  <meta name="author" content="DeuZon Corporation">
+
+  <title>DeuZon</title>
+  <link type = "text/css" rel="stylesheet" href="{% static "css/bootstrap.css" %}" />
+  <link rel="stylesheet" href="{% static "css/navbar-fixed-top.css" %}" type = "text/css"/>
+  <script type = "text/javascript"  src="{% static "js/jquery.js" %}" ></script>
+  <script type="text/javascript" src="{% static "js/bootstrap.js" %}"></script>
+</head>
+<body>
+
+
+<!-- Company Select Dropdown -->
+   <div id="reg" class="row" >  
+        <div style="margin: auto; width: 600px;" >
+
+            <!-- Company Cargo Track number submit -->
+
+           <table class="table">
+            <thead>
+              <tr>
+                <th colspan="1">Source Address</th>
+                <th colspan="1">Destination Address</th>
+                <th colspan="1">Sending Date</th>
+                <th colspan="1">Arrival Date</th>
+                <th colspan="1">Price</th>
+                <th colspan="2">Operations</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for shipment in shipmentList %}
+              <tr>
+                <td>{{ shipment.source_address }}</td>
+                <td>{{ shipment.destination_address }}</td>
+                <td>{{ shipment.sending_date }}</td>
+                {% if shipment.isReceived %}
+                <td>{{ shipment.arrival_date }}</td>
+                {% else %}
+                <td>Not Received</td>
+                {% endif %}
+                <td>{{ shipment.price }}</td>
+                <td colspan="2">
+                  <a href="/shipments/delete/{{ shipment.id }}"><span class="glyphicon glyphicon-remove" style="color:red"></span></a>
+                  <a href="/shipments/update/{{ shipment.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+                    
+                    <button onclick="location.href = '/shipments/new'" type="button" class="btn btn-default" style="margin: 10px">Add Shipment</button> 
+        </div> 
+   </div>  
+
+</body>
+</html>
+<style>
+#reg {
+  width: 100%;
+  margin: 100px auto;
+}
+</style>
+
+    {% endblock navbar %}

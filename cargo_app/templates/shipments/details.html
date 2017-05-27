@@ -1,0 +1,97 @@
+{% extends 'home/header.html' %}
+{% load staticfiles %}
+
+{% block navbar %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="DeuZon Cargo Website">
+  <meta name="author" content="DeuZon Corporation">
+
+  <title>DeuZon</title>
+  <link type = "text/css" rel="stylesheet" href="{% static "css/bootstrap.css" %}" />
+  <link rel="stylesheet" href="{% static "css/navbar-fixed-top.css" %}" type = "text/css"/>
+  <script type = "text/javascript"  src="{% static "js/jquery.js" %}" ></script>
+  <script type="text/javascript" src="{% static "js/bootstrap.js" %}"></script>
+</head>
+<body>
+
+
+<!-- Company Select Dropdown -->
+   <div id="reg" class="row" >  
+     
+        <div style="margin: auto; width: 600px;" >
+
+            <!-- Company Cargo Track number submit -->
+           
+           <table class="table">
+            <thead>
+              
+                <h2>Details of Shipments</h2>
+              
+            </thead>
+           </table>
+            {% for shipment in shipment %}
+            <table class="table">
+            <tbody>
+              
+                {% if not shipment %}
+                  </br>
+                  <tr>
+                    <td>There is no shipment registered to this user!</td>
+                  </tr>
+                {% elif shipment %}
+                  <tr>
+                    <th>User name:</th>
+                    <td>{{ shipment.userID.name }}</td>
+                  </tr>
+                  <tr>
+                    <th>User surname:</th>
+                    <td>{{ shipment.userID.surname }}</td>
+                  </tr>
+                  <tr>
+                    <th>Source Address:</th>
+                    <td>{{ shipment.source_address }}</td>
+                  </tr>
+                  <tr>
+                    <th>Destination Address:</th>
+                    <td>{{ shipment.destination_address }}</td>
+                  </tr>
+                  <tr>
+                    <th>Sending Date:</th>
+                    <td>{{ shipment.sending_date }}</td>
+                  </tr>
+                  <tr>
+                    <th>Arrival Date:</th>
+                    {% if shipment.isReceived %}
+                    <td>{{ shipment.arrival_date }}</td>
+                    {% else %}
+                    <td>Not Received</td>
+                    {% endif %}
+                  </tr>
+                  <tr>
+                    <th>Price:</th>
+                    <td>{{ shipment.price }}</td>
+
+                  </tr>
+                
+                {% endif %}
+              {% endfor %}
+            </tbody>
+            </table>
+          </table>
+                     
+        </div> 
+   </div>  
+
+</body>
+</html>
+<style>
+#reg {
+  width: 100%;
+  margin: 100px auto;
+}
+</style>
+
+    {% endblock navbar %}

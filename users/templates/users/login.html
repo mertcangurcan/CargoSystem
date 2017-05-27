@@ -1,0 +1,71 @@
+{% extends 'home/header.html' %}
+{% load staticfiles %}
+
+
+
+{% block navbar %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="DeuZon Cargo Website">
+  <meta name="author" content="DeuZon Corporation">
+
+  <title>DeuZon</title>
+  <link type = "text/css" rel="stylesheet" href="{% static "css/bootstrap.css" %}" />
+  <link rel="stylesheet" href="{% static "css/navbar-fixed-top.css" %}" type = "text/css"/>
+  <script type = "text/javascript"  src="{% static "js/jquery.js" %}" ></script>
+  <script type="text/javascript" src="{% static "js/bootstrap.js" %}"></script>
+</head>
+<body>
+
+
+<!-- Company Select Dropdown -->
+   <div id="reg" class="row" >  
+        <div style="margin: auto; width: 600px;" >
+
+            <!-- Company Cargo Track number submit -->
+
+            <label>Login<br><br></label>
+            
+                <form  action="/users/login" method="POST" class="form-inline">
+                     {% csrf_token %}
+
+                    <div class="form-group col-md-12">
+                        <label class="control-label col-md-4">Email Address : </label>
+                        <input class="col-md-8" type="text"  name="mail" placeholder="Mail Address"/><br><br>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label col-md-4">Password  : </label>
+                        <input class="col-md-8" type="password"  name="passwd" placeholder="Password"/><br><br>
+                    </div>
+                   
+                  
+                <button class="float-left submit-button">Login</button>
+  {% if messagetype == 1 %}             
+<div class="alert alert-success fade in">
+<strong>Success!</strong>
+   {{ message }}
+</div>
+  {% elif messagetype == 2 %}   
+  <div class="alert alert-danger fae in">
+  <strong>Invalid!</strong>
+   {{ message }}
+</div>
+  {% endif %}
+                </form>
+            
+           
+        </div> 
+   </div>  
+
+</body>
+</html>
+<style>
+#reg {
+  width: 100%;
+  margin: 100px auto;
+}
+</style>
+
+    {% endblock navbar %}

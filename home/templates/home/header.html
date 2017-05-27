@@ -1,0 +1,45 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/">DeuZon Logistic</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="/">Home</a></li>
+				{% if request.COOKIES.userid or userid %}
+					{% if userid %}
+						<li><a href="/shipments/user/{{ userid }}">Shipments</a></li>
+				
+					{% elif request.COOKIES.userid %}
+						<li><a href="/shipments/user/{{ request.COOKIES.userid }}">Shipments</a></li>
+					{% endif %}
+					<li><a href="/adminpanel">Admin Panel</a></li>
+				{% endif %}
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				
+			{% if request.COOKIES.userid or userid %}
+				{% if request.COOKIES.userid %}
+					<a href="/users/profile/{{ request.COOKIES.userid }}"><span class="glyphicon glyphicon-user" style="margin: 4px"></span></a>
+					<button onclick="location.href = '/users/logout'" type="button" class="btn btn-danger" style="margin: 10px">Logout</button>
+				{% elif userid %}	
+					<a href="/users/profile/{{ userid }}"><span class="glyphicon glyphicon-user" style="margin: 4px"></span></a>
+					<button onclick="location.href = '/users/logout'" type="button" class="btn btn-danger" style="margin: 10px">Logout</button>
+				{% endif %}
+        	{% else %}
+					<button onclick="location.href = '/users/login'" type="button" class="btn btn-success" style="margin: 10px">Login</button>
+					<button onclick="location.href = '/users/register'" type="button" class="btn btn-default" style="margin: 10px">Register</button>
+			{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>
+{% block navbar %}
+{% endblock %}

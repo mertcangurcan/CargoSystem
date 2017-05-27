@@ -1,0 +1,61 @@
+{% extends 'home/header.html' %}
+{% load staticfiles %}
+
+
+
+
+{% block navbar %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="DeuZon Cargo Website">
+  <meta name="author" content="DeuZon Corporation">
+
+  <title>DeuZon</title>
+  <link type = "text/css" rel="stylesheet" href="{% static "css/bootstrap.css" %}" />
+  <link rel="stylesheet" href="{% static "css/navbar-fixed-top.css" %}" type = "text/css"/>
+  <script type = "text/javascript"  src="{% static "js/jquery.js" %}" ></script>
+  <script type="text/javascript" src="{% static "js/bootstrap.js" %}"></script>
+</head>
+<body>
+
+<div id="reg" class="row" >  
+        <div style="margin: auto; width: 600px;" >
+
+            <!-- Company Cargo Track number submit -->
+
+            <label>Registration<br><br></label>
+            
+                <form  action="/users/profile/{{ userid }}" method="POST" class="form-inline">
+                     {% csrf_token %}
+                    
+                    <div class="form-group col-md-12">
+                        <label class="control-label col-md-4">Name : </label>
+                        <input class="col-md-8" type="text"  name="uname" value="{{ User.name }}"/><br><br>
+                    </div>    
+                    <div class="form-group col-md-12">
+                        <label class="control-label col-md-4">Surname : </label>
+                        <input class="col-md-8" type="text"  name="sname" value="{{ User.surname }}"/><br><br>
+                    </div>
+                      <div class="form-group col-md-12">
+                        <label class="control-label col-md-4">Password : </label>
+                        <input class="col-md-8" type="text"  name="passwd" type="password" value="{{ User.password }}"/><br><br>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label col-md-4">Email Address : </label>
+                        <input class="col-md-8" type="text"  name="mail" value="{{ User.email }}"/><br><br>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label col-md-4">Telephone no  : </label>
+                        <input class="col-md-8" type="text" name="telno" value="{{ User.telephone }}"/><br><br>
+                    </div>
+                   
+                <button  class="btn btn-primary">Save Changes</button> 
+                
+    
+
+
+
+
+{% endblock navbar %}

@@ -1,0 +1,111 @@
+{% extends 'home/header.html' %}
+{% load staticfiles %}
+
+{% block navbar %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="DeuZon Cargo Website">
+  <meta name="author" content="DeuZon Corporation">
+
+  <title>DeuZon</title>
+  <link type = "text/css" rel="stylesheet" href="{% static "css/bootstrap.css" %}" />
+  <link rel="stylesheet" href="{% static "css/navbar-fixed-top.css" %}" type = "text/css"/>
+  <script type = "text/javascript"  src="{% static "js/jquery.js" %}" ></script>
+  <script type="text/javascript" src="{% static "js/bootstrap.js" %}"></script>
+</head>
+<body>
+
+
+<!-- Company Select Dropdown -->
+   <div id="reg" class="row" >  
+        <div style="margin: auto; width: 1200px;" >
+
+            <div class="col-md-6">
+              <center><h1>SHIPMENTS</h1></center>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th colspan="1">Source Address</th>
+                    <th colspan="1">Destination Address</th>
+                    <th colspan="1">Sending Date</th>
+                    <th colspan="1">Arrival Date</th>
+                    <th colspan="1">Price</th>
+                    <th colspan="2">Operations</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for shipment in shipmentList %}
+                  <tr>
+                    <td>{{ shipment.source_address }}</td>
+                    <td>{{ shipment.destination_address }}</td>
+                    <td>{{ shipment.sending_date }}</td>
+                    {% if shipment.isReceived %}
+                    <td>{{ shipment.arrival_date }}</td>
+                    {% else %}
+                    <td>Not Received</td>
+                    {% endif %}
+                    <td>{{ shipment.price }}</td>
+                    <td colspan="2">
+                      <a href="/shipments/delete/{{ shipment.id }}"><span class="glyphicon glyphicon-remove" style="color:red"></span></a>
+                      <a href="/shipments/update/{{ shipment.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+              <button onclick="location.href = '/shipments/new'" type="button" class="btn btn-default" style="margin: 10px">Add Shipment</button>
+            </div>
+
+
+            <div class="col-md-6">
+              <center><h1>USERS</h1></center>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th colspan="1">Name</th>
+                    <th colspan="1">Surname</th>
+                    <th colspan="1">Email</th>
+                    <th colspan="1">Telephone</th>
+                    <th colspan="1">Admin</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for user in userList %}
+                  <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.surname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.telephone }}</td>
+                    {% if user.isAdmin %}
+                    <td>Yes</td>
+                    {% else %}
+                    <td>No</td>
+                    {% endif %}
+                    <td colspan="2">
+                      <a href="/users/delete/{{ user.id }}"><span class="glyphicon glyphicon-remove" style="color:red"></span></a>
+                      <a href="/users/update/{{ user.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                      <a href="/users/makeadmin/{{ user.id }}"><span class="glyphicon glyphicon-user" style="color:blue"></span></a>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+
+              <button onclick="location.href = '/users/register'" type="button" class="btn btn-default" style="margin: 10px">Add User</button>
+            </div>
+          </div>       
+        </div> 
+   </div>  
+
+</body>
+</html>
+<style>
+#reg {
+  width: 100%;
+  margin: 100px auto;
+}
+</style>
+
+    {% endblock navbar %}
