@@ -21,23 +21,23 @@ def sendCategories(request):
 def shipOrder(request):
     if request.method == 'POST':
         
-        if checkPayment(request.get.data('bank_receiptID'),request.get.data('quantity')):
-            last = CorporateShipment.objects.create(corporateID=CorporateUser.objects.filter(name='cname').id, 
-                                            customer_name = 'customer_name', 
-                                            customer_surname = 'customer_surname',
+        #if checkPayment(request.get.data('bank_receiptID'),request.get.data('quantity')):
+        last = CorporateShipment.objects.create(corporateID=CorporateUser.objects.filter(name=request.get.data('name')).id, 
+                                            customer_name = request.get.data('customer_name'), 
+                                            customer_surname = request.get.data('customer_surname'),
                                             source_address = 'cname',#?
                                             destination_address = request.get.data('destination_address'),
                                             categoryID = calculatePrice(request.get.data('quantity'))[1],#?
                                             sending_date = datetime.date.today(),
                                             trackID = "last",)
-            track_code = hashlib.md5()
-            track_code.update(str(last.id).encode())
-            track_code.digest()
-            track_number = str(track_code.hexdigest()[:12].upper())
-            CorporateShipment.objects.filter(id=last.id).update(trackID=track_number)
-            return track_number
-        else:
-            return None#?
+        track_code = hashlib.md5()
+        track_code.update(str(last.id).encode())
+        track_code.digest()
+        track_number = str(track_code.hexdigest()[:12].upper())
+        CorporateShipment.objects.filter(id=last.id).update(trackID=track_number)
+        return HttpResponse(track_number)
+        #else:
+        #    return None#?
 
 @api_view()
 def checkPayment(bank_receiptID, quantity):
@@ -54,8 +54,11 @@ def checkPayment(bank_receiptID, quantity):
         return False
 
 def index(request):
-    return render_to_response('shipments/list.html', {'userid':request.COOKIES['userid'], 'shipmentList':list(Shipment.objects.all())})
-
+    
+    if request.COOKIES:
+        return render_to_response('shipments/list.html', {'userid':request.COOKIES['userid'], 'shipmentList':list(Shipment.objects.all())})
+    else:
+        return render_to_response('shipments/list.html', {'shipmentList':list(Shipment.objects.all())})
 def addshipment(request):
     if request.method == 'POST':
         params = request.POST

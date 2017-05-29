@@ -10,7 +10,8 @@ urlpatterns = [
     url(r'^delete/(?P<pk>[0-9]+)/?$', views.delete, name='delete'),
     url(r'^gettrack/?$', views.gettrack, name='gettrack'),
     url(r'^user/(?P<pk>[0-9]+)/?$', views.listUserShipments, name='listUserShipments'),
-    url(r'^categories/$', views.sendCategories, name='sendCategories')
+    url(r'^categories/$', views.sendCategories, name='sendCategories'),
+    url(r'^shiporder/$', views.shipOrder, name='shipOrder'),
    
 ]
 
