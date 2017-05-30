@@ -45,8 +45,8 @@ def shipOrder(request):
             return None
 
 def checkPayment(bank_receiptID):
-    url = 'bankurl/accounts/query/receipt/'
-    url = url + str(bank_receiptID)
+    url = 'http://146.185.147.162/accounts/query/receipt/'
+    url = url + str(bank_receiptID)+ '/'
     r = requests.get(url)
     des_response = r.json()
     
