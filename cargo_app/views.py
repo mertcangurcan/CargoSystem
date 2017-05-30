@@ -1,5 +1,6 @@
 import datetime
 import hashlib
+import requests
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, JsonResponse
 from cargo_app.models import Shipment, Category
@@ -7,7 +8,7 @@ from users.models import User
 from IPython import embed
 from rest_framework.decorators import api_view
 from .serializers import CategorySerializer
-from .models import CorporateShipment
+from .models import CorporateShipment, CorporateUser
 from rest_framework.test import APIClient
 
 
@@ -17,42 +18,39 @@ def sendCategories(request):
         serializer = CategorySerializer(categories, many=True)
         return JsonResponse(serializer.data, safe=False)    
      
-@api_view()
+@api_view(['POST'])
 def shipOrder(request):
     if request.method == 'POST':
+        embed()
+        bank_receiptID =request.data['billNo']
         
-        #if checkPayment(request.get.data('bank_receiptID'),request.get.data('quantity')):
-        last = CorporateShipment.objects.create(corporateID=CorporateUser.objects.filter(name=request.get.data('name')).id, 
-                                            customer_name = request.get.data('customer_name'), 
-                                            customer_surname = request.get.data('customer_surname'),
-                                            source_address = 'cname',#?
-                                            destination_address = request.get.data('destination_address'),
-                                            categoryID = calculatePrice(request.get.data('quantity'))[1],#?
-                                            sending_date = datetime.date.today(),
-                                            trackID = "last",)
-        track_code = hashlib.md5()
-        track_code.update(str(last.id).encode())
-        track_code.digest()
-        track_number = str(track_code.hexdigest()[:12].upper())
-        CorporateShipment.objects.filter(id=last.id).update(trackID=track_number)
-        return HttpResponse(track_number)
+        if checkPayment(bank_receiptID):
+            last = CorporateShipment.objects.create(corporateID=CorporateUser.objects.filter(name=request.data['CompanyName'])[0], 
+                                                customer_name = request.data['destname'], 
+                                                customer_surname = request.data['destsurname'],
+                                                source_address = "Deuzon Logistics",
+                                                destination_address = request.data['Destaddress'],
+                                                categoryID = calculatePrice(request.data['⁠⁠⁠totalQuantity'])[1],
+                                                sending_date = datetime.date.today(),
+                                                trackID = "last")
+            track_code = hashlib.md5()
+            track_code.update(str(last.id).encode())
+            track_code.digest()
+            track_number = str(track_code.hexdigest()[:12].upper())
+            CorporateShipment.objects.filter(id=last.id).update(trackID=track_number)
+            return HttpResponse(track_number)
         #else:
         #    return None#?
-
-@api_view()
-def checkPayment(bank_receiptID, quantity):
-    client = APIClient()
-    bank_receipt = client.GET('/bankip/', {'receiptID':bank_receiptID}, format='json')
-    if bank_receipt is not None:
-        receiptID = bank_receipt.data.get('receiptID')
-        price = calculatePrice(quantity)[0]
-        if price == bank_receipt.data.get('price'):
-            return True
         else:
-            return False
-    else:
-        return False
+            return None
 
+def checkPayment(bank_receiptID):
+    url = 'bankurl/accounts/query/receipt/'
+    url = url + str(bank_receiptID)
+    r = requests.get(url)
+    des_response = r.json()
+    
+    return des_response['isExist']
 def index(request):
     
     if request.COOKIES:
@@ -90,7 +88,6 @@ def delete(request, pk):
 def update(request, pk):
     if request.method == 'GET':
         shipment = Shipment.objects.filter(id=pk)[0]
-        #return render(request, 'shipments/update.html')
         return render_to_response('shipments/update.html', {'userid':request.COOKIES['userid'], 'shipment':shipment, 'quantity':shipment.price / shipment.categoryID.cat_price})
     if request.method == 'POST':
         params = request.POST

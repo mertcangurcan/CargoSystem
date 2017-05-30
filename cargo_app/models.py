@@ -3,10 +3,9 @@ from users.models import User
 
 class CorporateUser(models.Model):
     name = models.CharField(max_length=30)
-    password = models.CharField(max_length=12)
     telephone = models.IntegerField()
     address = models.CharField(max_length=300)
-    discount_factor = models.FloatField(default=1.00)
+
 
 class Category(models.Model):
     name = models.CharField(max_length=5)
