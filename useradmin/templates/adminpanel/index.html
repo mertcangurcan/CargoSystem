@@ -85,7 +85,7 @@
                     {% endif %}
                     <td colspan="2">
                       <a href="/users/delete/{{ user.id }}"><span class="glyphicon glyphicon-remove" style="color:red"></span></a>
-                      <a href="/users/update/{{ user.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                      <a href="/users/edituser/{{ user.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
                       <a href="/users/makeadmin/{{ user.id }}"><span class="glyphicon glyphicon-user" style="color:blue"></span></a>
                     </td>
                   </tr>
@@ -93,7 +93,7 @@
                 </tbody>
               </table>
 
-              <button onclick="location.href = '/users/register'" type="button" class="btn btn-default" style="margin: 10px">Add User</button>
+              <button onclick="location.href = '/users/adduser'" type="button" class="btn btn-default" style="margin: 10px">Add User</button>
             </div>
           </div>       
         </div> 

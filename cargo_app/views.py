@@ -54,9 +54,9 @@ def checkPayment(bank_receiptID):
 def index(request):
     
     if request.COOKIES:
-        return render_to_response('shipments/list.html', {'userid':request.COOKIES['userid'], 'shipmentList':list(Shipment.objects.all())})
+        return render_to_response('shipments/list.html', {'userid':request.COOKIES['userid'], 'shipmentList':list(Shipment.objects.filter(userID=request.COOKIES['userid']))})
     else:
-        return render_to_response('shipments/list.html', {'shipmentList':list(Shipment.objects.all())})
+        return render_to_response('shipments/list.html', {'shipmentList':list(Shipment.objects.filter(request.COOKIES['userid']))})
 def addshipment(request):
     if request.method == 'POST':
         params = request.POST
@@ -116,9 +116,19 @@ def gettrack(request):
         params = request.POST
         query_result = Shipment.objects.filter(trackID = params['trackid'])
         if query_result.count() == 0:
-            return render_to_response("home/home.html", {'userid':request.COOKIES['userid'], 'message':'Invalid track id.', 'messagetype':2})
+            return render_to_response("home/home.html", {'firms':CorporateUser.objects.all(),'userid':request.COOKIES['userid'], 'message':'Invalid track id.', 'messagetype':2})
         else:
-            return render_to_response('shipments/details.html', {'userid':request.COOKIES['userid'], 'shipment':query_result[0].values()})
+            return render_to_response('shipments/details.html', {'userid':request.COOKIES['userid'], 'shipment':query_result[0]})
+
+def getcorporatetrack(request):
+    if request.method == 'POST':
+        params = request.POST
+        query_result = CorporateShipment.objects.filter(trackID = params['trackid'])
+        if query_result.count() == 0:
+            return render_to_response("home/home.html", {'firms':CorporateUser.objects.all(),'userid':request.COOKIES['userid'], 'message':'Invalid track id.', 'messagetype':2})
+        else:
+            return render_to_response('shipments/cordetails.html', {'userid':request.COOKIES['userid'], 'shipment':query_result[0]})
+
 
 
 
@@ -126,4 +136,5 @@ def listUserShipments(request,pk):
     if request.method == 'GET':
         user_shipments = Shipment.objects.filter(userID=pk)
         
-        return render_to_response('shipments/details.html', {'userid':request.COOKIES['userid'], 'shipment':Shipment.objects.filter(userID=pk)})
+        #return render_to_response('shipments/list.html', {'userid':request.COOKIES['userid'], 'shipment':Shipment.objects.filter(userID=pk)})
+        return index(request)

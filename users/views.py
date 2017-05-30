@@ -7,31 +7,63 @@ from IPython import embed
 
 
 
-
-
-def register(request):
+def edituser(request, pk):
+    if request.method == 'GET':
+        user = User.objects.filter(id=pk)[0]
+        return render_to_response('users/edituser.html', {'userid':request.COOKIES['userid'], 'user':user})
     if request.method == 'POST':
         params = request.POST
         if(User.objects.filter(email=params["mail"]).count() > 0):
-            return render_to_response("users/register.html", {'message':'Email has already been used.', 'messagetype':2})
+            return render_to_response("users/edituser.html", {'userid':request.COOKIES['userid'], 'message':'Email has already been used.', 'messagetype':2})
+        User.objects.filter(id=pk).update(name=params["uname"],
+                                        surname=params["sname"],
+                                        password=params["passwd"],
+                                        telephone=params["telno"],
+                                        email=params["mail"],
+                                    )
+        return render_to_response("home/home.html", {'userid':request.COOKIES['userid'], 'message':'User information has been changed', 'messagetype':1})
+
+
+def adduser(request):
+    if request.method == 'POST':
+        params = request.POST
+        if(User.objects.filter(email=params["mail"]).count() > 0):
+            return render_to_response("users/adduser.html", {'userid':request.COOKIES['userid'], 'message':'Email has already been used.', 'messagetype':2})
         User.objects.create(name=params["uname"],
                             surname=params["sname"],
                             password=params["passwd"],
                             telephone=params["telno"],
                             email=params["mail"],
                             )        
-        return render_to_response("home/home.html", {'message':'You are registered', 'messagetype':1})
+        return render_to_response("home/home.html", {'userid':request.COOKIES['userid'], 'message':'A new User Created', 'messagetype':1})
+    elif request.method == 'GET':
+        return render(request, "users/adduser.html",{'userid':request.COOKIES['userid']})
+
+
+
+def register(request):
+    if request.method == 'POST':
+        params = request.POST
+        if(User.objects.filter(email=params["mail"]).count() > 0):
+            return render_to_response("users/register.html", {'firms':CorporateUser.objects.all(),'message':'Email has already been used.', 'messagetype':2})
+        User.objects.create(name=params["uname"],
+                            surname=params["sname"],
+                            password=params["passwd"],
+                            telephone=params["telno"],
+                            email=params["mail"],
+                            )        
+        return render_to_response("home/home.html", {'firms':CorporateUser.objects.all(),'message':'You are registered', 'messagetype':1})
     elif request.method == 'GET':
         return render(request, "users/register.html")
 
 def login(request):
     if 'userid' in request.COOKIES:
-        return render_to_response("home/home.html", {'message':'Already login', 'messagetype':2})
+        return render_to_response("home/home.html", {'firms':CorporateUser.objects.all(),'message':'Already login', 'messagetype':2})
     if request.method == 'POST':
         params = request.POST
         filtered_query = User.objects.filter(email=params['mail'])
         if(filtered_query.count() == 1 and filtered_query[0].password == params['passwd']):
-            response = render_to_response("home/home.html", {'userid':filtered_query[0].id, 'message':'Successful Login', 'messagetype':1})
+            response = render_to_response("home/home.html", {'firms':CorporateUser.objects.all(),'userid':filtered_query[0].id, 'message':'Successful Login', 'messagetype':1})
             response.set_cookie('userid', filtered_query[0].id)
             # response.cookies.get('userid') <Morsel: userid=15; Path=/>
             return response
@@ -51,9 +83,9 @@ def details(request,pk):
                                     telephone=params['telno'],
                                     )
         
-        return render(request, "home/home.html", {'userid':request.COOKIES['userid'], 'message':'Changes Saved','messagetype':1})
+        return render(request, "home/home.html", {'firms':CorporateUser.objects.all(),'userid':request.COOKIES['userid'], 'message':'Changes Saved','messagetype':1})
 def logout(request):
-    response = render_to_response("home/home.html", {'message':'Successful Logout', 'messagetype':1})
+    response = render_to_response("home/home.html", {'firms':CorporateUser.objects.all(),'message':'Successful Logout', 'messagetype':1})
     response.delete_cookie('userid')
     return response
 
@@ -77,7 +109,7 @@ def update(request, pk):
                                         telephone=params["telno"],
                                         email=params["mail"],
                                     )
-        return render_to_response("home/home.html", {'message':'User information has been changed', 'messagetype':1})
+        return render_to_response("home/home.html", {'firms':CorporateUser.objects.all(),'userid':request.COOKIES['userid'],'message':'User information has been changed', 'messagetype':1})
 
 def makeadmin(request, pk):
     User.objects.filter(id=pk).update(isAdmin = True)
