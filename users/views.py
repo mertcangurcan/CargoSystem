@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.template import RequestContext, loader
 from django.http import HttpResponseRedirect,HttpResponse
 from users.models import User
+from cargo_app.models import CorporateUser
 from cargo_app.models import Shipment
 from IPython import embed
 
