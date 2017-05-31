@@ -44,11 +44,11 @@
                 {% elif shipment %}
                   <tr>
                     <th>User name:</th>
-                    <td>{{ shipment.userID.name }}</td>
+                    <td>{{ shipment.customer_name }}</td>
                   </tr>
                   <tr>
                     <th>User surname:</th>
-                    <td>{{ shipment.userID.surname }}</td>
+                    <td>{{ shipment.customer_surname }}</td>
                   </tr>
                   <tr>
                     <th>Source Address:</th>
@@ -70,11 +70,7 @@
                     <td>Not Received</td>
                     {% endif %}
                   </tr>
-                  <tr>
-                    <th>Price:</th>
-                    <td>{{ shipment.price }}</td>
 
-                  </tr>
                 
                 {% endif %}
              

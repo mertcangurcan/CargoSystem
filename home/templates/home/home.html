@@ -1,6 +1,7 @@
 {% extends 'home/header.html' %}
 {% load staticfiles %}
 {% block navbar %}
+    {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,15 +17,16 @@
 </head>
 <body>
   <div class="container">
-     <!-- Deuzon image -->
+
     <div class="jumbotron">
       <h1>Check your shipment now!</h1>
+      <img src="{% static "Banner.png" %}" width="1000"  height="300" alt="Banner Photo"/>
       <h3>Enter your cargo track number to learn details</h3>
       <div class="form-group">
         <form  action="/shipments/gettrack" method="POST" class="form-inline">
           <label >Cargo Track Number : </label>
           <input type="text"  name="trackid" placeholder="Enter track number">
-          <input type="submit" class="btn btn-default" value="Find" />
+          <input type="image" src="{% static "magnifier.png" %}" class="btn btn-default" value="Find" />
         </form>
         <form  action="/shipments/getcorporatetrack" method="POST" class="form-inline">
         <label >Corporate Track Code : </label>
@@ -35,14 +37,14 @@
         </select>
         <label >Corporate Track Code : </label>
           <input type="text"  name="trackid" placeholder="Enter track number">
-          <input type="submit" class="btn btn-default" value="Find" />
+          <input type="image" src="{% static "magnifier.png" %}" class="btn btn-default" value="Find" />
         </form>
-          {% if messagetype == 1 %}             
+          {% if messagetype == 1 %}
 <div class="alert alert-success fade in">
 <h3><strong>Success!</strong></h3>
    {{ message }}
 </div>
-  {% elif messagetype == 2 %}   
+  {% elif messagetype == 2 %}
   <div class="alert alert-danger fae in">
   <h3><strong>Invalid!</strong></h3>
    {{ message }}

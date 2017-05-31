@@ -1,5 +1,5 @@
 <nav class="navbar navbar-default navbar-fixed-top">
-
+{% load static %}
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -12,30 +12,30 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="/">Home</a></li>
+				<li><a href="/"><span><img src="{% static "Home.png" %}"/></span></a></li>
 				{% if request.COOKIES.userid or userid %}
 					{% if userid %}
-						<li><a href="/shipments/user/{{ userid }}">Shipments</a></li>
-				
+						<li><a href="/shipments/user/{{ userid }}"><span><img src="{% static "Shippment.png" %}"/></span></a></li>
+
 					{% elif request.COOKIES.userid %}
-						<li><a href="/shipments/user/{{ request.COOKIES.userid }}">Shipments</a></li>
+						<li><a href="/shipments/user/{{ request.COOKIES.userid }}"><span><img src="{% static "Shippment.png" %}"/></span></a></li>
 					{% endif %}
-					<li><a href="/adminpanel">Admin Panel</a></li>
+					<li><a href="/adminpanel"><span><img src="{% static "Admin.png" %}"/></span></a></li>
 				{% endif %}
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				
 			{% if request.COOKIES.userid or userid %}
 				{% if request.COOKIES.userid %}
-					<a href="/users/profile/{{ request.COOKIES.userid }}"><span class="glyphicon glyphicon-user" style="margin: 4px"></span></a>
-					<button onclick="location.href = '/users/logout'" type="button" class="btn btn-danger" style="margin: 10px">Logout</button>
+					<a href="/users/profile/{{ request.COOKIES.userid }}"><span><img src="{% static "Profile.png" %}"/></span></a>
+					<button onclick="location.href = '/users/logout'" type="button" class="btn btn-danger" style="margin: 10px"><img src="{% static "Logout.png" %}"/></button>
 				{% elif userid %}	
-					<a href="/users/profile/{{ userid }}"><span class="glyphicon glyphicon-user" style="margin: 4px"></span></a>
-					<button onclick="location.href = '/users/logout'" type="button" class="btn btn-danger" style="margin: 10px">Logout</button>
+					<a href="/users/profile/{{ userid }}"><span><img src="{% static "Profile.png" %}"/></span></a>
+					<button onclick="location.href = '/users/logout'" type="button" class="btn btn-danger" style="margin: 10px"><img src="{% static "Logout.png" %}"/></button>
 				{% endif %}
         	{% else %}
-					<button onclick="location.href = '/users/login'" type="button" class="btn btn-success" style="margin: 10px">Login</button>
-					<button onclick="location.href = '/users/register'" type="button" class="btn btn-default" style="margin: 10px">Register</button>
+					<button onclick="location.href = '/users/login'" type="button" class="btn btn-success" style="margin: 10px"><img src="{% static "Login.png" %}"/></button>
+					<button onclick="location.href = '/users/register'" type="button" class="btn btn-default" style="margin: 10px"><img src="{% static "Register.png" %}"/></button>
 			{% endif %}
 			</ul>
 		</div>

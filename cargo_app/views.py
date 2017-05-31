@@ -21,16 +21,15 @@ def sendCategories(request):
 @api_view(['POST'])
 def shipOrder(request):
     if request.method == 'POST':
-        embed()
         bank_receiptID =request.data['billNo']
-        
+    
         if checkPayment(bank_receiptID):
             last = CorporateShipment.objects.create(corporateID=CorporateUser.objects.filter(name=request.data['CompanyName'])[0], 
                                                 customer_name = request.data['destname'], 
                                                 customer_surname = request.data['destsurname'],
                                                 source_address = "Deuzon Logistics",
                                                 destination_address = request.data['Destaddress'],
-                                                categoryID = calculatePrice(request.data['⁠⁠⁠totalQuantity'])[1],
+                                                categoryID = calculatePrice(request.data['totalQuantity'])[1],
                                                 sending_date = datetime.date.today(),
                                                 trackID = "last")
             track_code = hashlib.md5()
@@ -49,8 +48,7 @@ def checkPayment(bank_receiptID):
     url = url + str(bank_receiptID)+ '/'
     r = requests.get(url)
     des_response = r.json()
-    
-    return des_response['isExist']
+    return des_response['IsExist']
 def index(request):
     
     if request.COOKIES:
@@ -100,6 +98,8 @@ def update(request, pk):
         return index(request)
 
 def calculatePrice(quantity):
+    quantity = int(quantity)
+
     price = quantity * 1 #more than 50
     ctgry = None #new category needed for more than 50
     for c in Category.objects.all().iterator():
