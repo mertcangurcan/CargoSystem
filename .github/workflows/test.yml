@@ -1,0 +1,16 @@
+name: Example Print Message Workflow
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  print_message:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Print a message
+        run: echo "Hello, GitHub Actions!"
