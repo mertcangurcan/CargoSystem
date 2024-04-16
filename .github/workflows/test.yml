@@ -1,8 +1,7 @@
 name: Example Print Message Workflow
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  push:
 
 jobs:
   print_message:
